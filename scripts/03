@@ -1,0 +1,68 @@
+#!/bin/bash
+
+red=`tput setaf 1`
+green=`tput setaf 2`
+blue=`tput setaf 4`
+reset=`tput sgr0`
+GREEN='\033[01;32m'
+YELLOW='\033[01;33m'
+BLUE='\033[01;34m'
+NONE='\033[0m'
+
+echo "${green}What do you want to do? Choose the number:
+${blue}1${reset} Create a new user
+${blue}2${reset} List all real users
+${blue}3${reset} Delete an existing user
+${blue}4${reset} See available space on the system
+${blue}5${reset} Kill SSH service
+${blue}6${reset} Reboot SSH service
+${blue}7${reset} See status of SSH service
+${blue}8${reset} Connect yourself as another user via ssh"
+read num
+
+case $num in
+	1)
+		echo "${green}type name${reset}"
+		read user
+		sudo adduser $user
+		;;
+	2)
+		echo "${green}List of real users:${reset}"
+		awk -v b=$YELLOW -v n=$NONE -F : '/home/ {print b$1n }' /etc/passwd
+		;;
+	3)
+		echo "${green}List of real users:${reset}"
+		cat /etc/passwd | awk -v b=$YELLOW -v n=$NONE -F ':' '/home/ {print b$1n}'
+		echo "${green}List of all active users:${reset}"
+		who | awk -v b=$YELLOW -v n=$NONE '{print b$1n}'
+		echo "${green}Which of users you want to delete?${reset}"
+		read user
+		sudo pkill -u $user
+		sudo userdel -r $user
+		echo "${green}List of real users:${reset}"
+		cat /etc/passwd | awk -v b=$YELLOW -v n=$NONE -F ':' '/home/ {print b$1n}'
+		;;
+	4)
+		df -h
+		;;
+	5)
+		sudo systemctl stop ssh
+		;;
+	6)
+		sudo service ssh restart
+		;;
+	7)
+		sudo service ssh status
+		;;
+	8)
+		echo "${green}List of real users:${reset}"
+		cat /etc/passwd | awk -v b=$YELLOW -v n=$NONE -F ':' '/home/ {print b$1n}'
+		echo "${green}type username${reset}"
+		read name
+		ssh name@localhost
+		;;
+	*)
+		echo "${red}Wrong number${reset}"
+		;;
+esac
+

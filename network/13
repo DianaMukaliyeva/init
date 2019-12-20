@@ -1,0 +1,2 @@
+#	c3r2p4.hive.fi.
+nslookup `./12` | grep name | awk '{print $4}'

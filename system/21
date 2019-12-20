@@ -1,0 +1,2 @@
+awk -F : '/home/ {print $1 }' /etc/passwd
+#the real users on the system have a home directory at /home.

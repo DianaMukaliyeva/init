@@ -1,0 +1,5 @@
+#networksetup -listallhardwareports
+echo "$(tput setaf 2)broadcast: $(tput sgr 0)\c" &&
+ifconfig en0 | grep "broadcast" | cut -d " " -f6
+echo "$(tput setaf 2)IP adress: $(tput sgr 0)\c" &&
+ifconfig en0 | grep "broadcast" | cut -d " " -f2

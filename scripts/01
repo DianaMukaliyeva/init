@@ -1,0 +1,8 @@
+#!/bin/bash
+
+GREEN='\033[01;32m'
+YELLOW='\033[01;33m'
+BLUE='\033[01;34m'
+NONE='\033[0m'
+
+awk -v b=$YELLOW -v n=$NONE -F':' '{print $1 "\t" b$3n "\t" $7}' /etc/passwd

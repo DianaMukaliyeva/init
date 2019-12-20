@@ -1,0 +1,14 @@
+#!/bin/bash
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+echo "${green}List of real users:${reset}"
+cat /etc/passwd | awk -F ':' '/home/ {print $1}'
+echo "${green}List of all active users:${reset}"
+who | awk '{print $1}'
+echo "${green}Which of users you want to delete?${reset}"
+read user
+sudo pkill -u $user
+sudo userdel -r $user
+echo "${green}List of real users:${reset}"
+cat /etc/passwd | awk -F ':' '/home/ {print $1}'
